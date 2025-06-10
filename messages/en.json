@@ -1,0 +1,41 @@
+{
+  "home": {
+    "title": "Physiotherapy Center Health & Movement",
+    "subtitle": "Regain mobility, well-being, and energy with our expert physiotherapists",
+    "cta": "Make an appointment",
+    "aboutTitle": "About us",
+    "aboutText": "Located in the heart of the city, our physiotherapy center welcomes you in a modern and warm environment. Our team supports you in regaining mobility and improving your quality of life.",
+    "servicesTitle": "Our services",
+    "services": [
+      "Functional rehabilitation",
+      "Sports physiotherapy",
+      "Therapeutic massages",
+      "Respiratory physiotherapy",
+      "Postural prevention and advice"
+    ],
+    "teamTitle": "Our team",
+    "team": [
+      {
+        "name": "Marie Dupont",
+        "role": "Certified physiotherapist"
+      },
+      {
+        "name": "Lucas Martin",
+        "role": "Sports specialist"
+      }
+    ],
+    "bookingTitle": "Make an appointment",
+    "bookingCta": "Book a session",
+    "contactTitle": "Contact",
+    "address": "Address: 123 Rue de la Santé, 75000 Paris",
+    "phone": "Phone: 01 23 45 67 89",
+    "email": "Email: contact@kine-sante.fr",
+    "legal": "Legal notice",
+    "privacy": "Privacy policy",
+    "copyright": "© 2024 Physiotherapy Center Health & Movement. All rights reserved."
+  },
+  "unauthorized": {
+    "message": "You're not authorized to see this page",
+    "rediction": "Automatic redirection in"
+  }
+}

@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.9.1",
+    "@prisma/client": "^6.9.0",
     "clsx": "^2.1.1",
     "cookies-next": "^6.0.0",
-    "firebase": "^11.8.1",
-    "firebase-admin": "^13.4.0",
     "next": "15.3.3",
+    "next-auth": "^4.24.11",
+    "next-intl": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.89.1"
@@ -25,6 +27,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "typescript": "^5"
+    "prisma": "^6.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

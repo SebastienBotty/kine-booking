@@ -1,0 +1,41 @@
+{
+  "home": {
+    "title": "Kinesitherapiecentrum Gezondheid & Beweging",
+    "subtitle": "Hervind mobiliteit, welzijn en energie met onze deskundige kinesitherapeuten",
+    "cta": "Afspraak maken",
+    "aboutTitle": "Over ons",
+    "aboutText": "Ons kinesitherapiecentrum, gelegen in het hart van de stad, verwelkomt u in een moderne en warme omgeving. Ons team helpt u om uw mobiliteit te herstellen en uw levenskwaliteit te verbeteren.",
+    "servicesTitle": "Onze diensten",
+    "services": [
+      "Functionele revalidatie",
+      "Sportkinesitherapie",
+      "Therapeutische massages",
+      "Respiratoire kinesitherapie",
+      "Preventie en houdingsadvies"
+    ],
+    "teamTitle": "Ons team",
+    "team": [
+      {
+        "name": "Marie Dupont",
+        "role": "Gediplomeerde kinesitherapeute"
+      },
+      {
+        "name": "Lucas Martin",
+        "role": "Sportdeskundige"
+      }
+    ],
+    "bookingTitle": "Afspraak maken",
+    "bookingCta": "Sessie boeken",
+    "contactTitle": "Contact",
+    "address": "Adres: Rue de la Santé 123, 75000 Parijs",
+    "phone": "Telefoon: 01 23 45 67 89",
+    "email": "E-mail: contact@kine-sante.fr",
+    "legal": "Wettelijke vermeldingen",
+    "privacy": "Privacybeleid",
+    "copyright": "© 2024 Kinesitherapiecentrum Gezondheid & Beweging. Alle rechten voorbehouden."
+  },
+  "unauthorized": {
+    "message": "U bent niet gemachtigd om deze pagina te bekijken",
+    "redirection": "Automatische doorverwijzing over"
+  }
+}
