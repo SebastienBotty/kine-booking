@@ -3,8 +3,8 @@ import NextAuth from "next-auth/next";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "../../../lib/prisma/prisma";
 import GoogleProvider from "next-auth/providers/google";
-import Facebook from "next-auth/providers/facebook";
-import { Role } from "@prisma/client";
+import FacebookProvider from "next-auth/providers/facebook";
+import EmailProvider from "next-auth/providers/email";
 
 const googleProviderOptions = GoogleProvider({
   clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -20,15 +20,28 @@ const googleProviderOptions = GoogleProvider({
   },
 });
 
+const facebookProviderOptions = FacebookProvider({
+  clientId: process.env.FACEBOOK_CLIENT_ID!,
+  clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+  profile(profile) {
+    return {
+      id: profile.id,
+      name: profile.name,
+      email: profile.email,
+      image: profile.picture?.data?.url,
+      role: profile.role ? profile.role : "user",
+    };
+  },
+});
+
 console.log({
   clientId: process.env.GOOGLE_CLIENT_ID!,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
 });
 const authOptions: AuthOptions = {
   session: { strategy: "jwt" },
-
   adapter: PrismaAdapter(prisma),
-  providers: [googleProviderOptions],
+  providers: [googleProviderOptions, facebookProviderOptions],
   callbacks: {
     async jwt({ token, user }) {
       // On fusionne les infos utilisateur dans le token, mais on s'assure que les champs obligatoires ne sont jamais null

@@ -63,7 +63,8 @@ CREATE TABLE "Appointment" (
     "startTime" TIMESTAMP(3) NOT NULL,
     "endTime" TIMESTAMP(3) NOT NULL,
     "status" "AppointmentStatus" NOT NULL DEFAULT 'PENDING',
-    "notes" TEXT,
+    "patientNote" TEXT,
+    "practionnerNote" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")
@@ -74,10 +75,22 @@ CREATE TABLE "Availability" (
     "id" TEXT NOT NULL,
     "practitionerId" TEXT NOT NULL,
     "dayOfWeek" INTEGER NOT NULL,
-    "startTime" TEXT NOT NULL,
-    "endTime" TEXT NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Availability_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Unavailability" (
+    "id" TEXT NOT NULL,
+    "practitionerId" TEXT NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
+    "reason" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Unavailability_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -100,3 +113,6 @@ ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_practitionerId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "Availability" ADD CONSTRAINT "Availability_practitionerId_fkey" FOREIGN KEY ("practitionerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Unavailability" ADD CONSTRAINT "Unavailability_practitionerId_fkey" FOREIGN KEY ("practitionerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

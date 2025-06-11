@@ -9,7 +9,7 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const adminRoutes = ["settings", "users", "analytics", "management"];
-  const doctorRoutes = ["calendar", "appointments", "settings"];
+  const doctorRoutes = ["calendar", "settings"];
 
   const pathSegments = pathname.split("/");
   const dashboardRoute = pathSegments[3]; // après /locale/dashboard/
@@ -19,8 +19,6 @@ export default async function middleware(req: NextRequest) {
 
   // Extraire la locale du pathname (ex: /fr/dashboard/admin -> fr)
   const locale = pathname.split("/")[1] || "fr"; // fallback vers 'fr'
-  console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-  console.log("Pathname:", pathname);
 
   // 2. Protection des routes sensibles
 

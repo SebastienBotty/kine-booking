@@ -21,9 +21,7 @@ export default async function LocaleLayout({
   } catch (error) {
     notFound();
   }
-  console.log("AHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAH");
-  console.log(locale);
-  console.log(messages);
+
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }

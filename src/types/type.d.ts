@@ -13,3 +13,22 @@ declare module "next-auth/jwt" {
 }
 
 export type LanguageType = "FR" | "EN" | "NL";
+
+export type WeekDayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type SlotsType = {
+  startTime: Date;
+  endTime: Date;
+};
+export type SlotsDecimalType = {
+  startTime: number;
+  endTime: number;
+};
+
+export type BlockedSlotsType = SlotsType & {
+  type: "Appointment" | "Unavailability";
+};
+
+export type WeekScheduleInfosType = {
+  openings: SlotsDecimalType[];
+  blockedSlots: BlockedSlotsType[];
+};
