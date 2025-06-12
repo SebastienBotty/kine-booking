@@ -10,6 +10,8 @@ import {
 } from "@/lib/functions/helpers";
 import { AvailabilityType, WeekScheduleInfosType } from "@/types/type";
 import { startOfWeek } from "date-fns";
+import { useSlots } from "@/hooks/useSlots";
+import { fetchAllPractitioners } from "@/api/practitionerApi";
 
 interface Doctor {
   id: string;
@@ -26,44 +28,21 @@ export default function AppointmentPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctorId, setselectedDoctorId] = useState<string>("");
   const [currentStart, setCurrentStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));
-  const [availabilities, setAvailabilities] = useState<AvailabilityType[][]>([]);
-  const [weekInfos, setWeekInfos] = useState<WeekScheduleInfosType | null>(null);
+
+  const { availabilities, loading, error } = useSlots(selectedDoctorId, currentStart);
 
   useEffect(() => {
-    fetch("/api/doctors")
-      .then((res) => res.json())
-      .then(setDoctors);
-  }, []);
-  useEffect(() => {
-    if (!selectedDoctorId) return;
-
-    const fetchSlots = async () => {
-      const startDate = currentStart.toISOString().split("T")[0];
-      const endDateObj = new Date(currentStart);
-      endDateObj.setDate(currentStart.getDate() + 6); // sur 7 jours
-      const endDate = endDateObj.toISOString().split("T")[0];
-
+    const loadDoctors = async () => {
       try {
-        const res = await fetch(`/api/slots?practitionerId=${selectedDoctorId}&start=${startDate}`);
-        if (!res.ok) throw new Error("Erreur lors du chargement des créneaux");
-
-        const data: WeekScheduleInfosType = await res.json();
-        console.log(data);
-        const slots = generateAvailabilities(
-          currentStart,
-          new Date(endDate),
-          data.openings,
-          data.blockedSlots
-        );
-        console.log(slots);
-        setAvailabilities(slots);
-      } catch (err) {
-        console.error(err);
+        const doctors = await fetchAllPractitioners();
+        setDoctors(doctors);
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    fetchSlots();
-  }, [selectedDoctorId, currentStart]);
+    loadDoctors();
+  }, []);
 
   return (
     <div className={styles["appointment-container"]}>
