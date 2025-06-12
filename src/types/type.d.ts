@@ -12,9 +12,25 @@ declare module "next-auth/jwt" {
   type JWT = User;
 }
 
+export type AvailabilityType = {
+  id: string;
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+  blocked: boolean;
+};
+
+export type BlockedSlotsType = SlotsType & {
+  type: "Appointment" | "Unavailability";
+};
+
+export type Doctor = {
+  id: string;
+  name: string;
+  image?: string;
+};
 export type LanguageType = "FR" | "EN" | "NL";
 
-export type WeekDayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type SlotsType = {
   startTime: Date;
   endTime: Date;
@@ -24,19 +40,9 @@ export type SlotsDecimalType = {
   endTime: number;
 };
 
-export type BlockedSlotsType = SlotsType & {
-  type: "Appointment" | "Unavailability";
-};
+export type WeekDayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type WeekScheduleInfosType = {
   openings: SlotsDecimalType[];
   blockedSlots: BlockedSlotsType[];
-};
-
-export type AvailabilityType = {
-  id: string;
-  dayOfWeek: number;
-  startTime: string;
-  endTime: string;
-  blocked: boolean;
 };

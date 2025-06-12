@@ -1,28 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./appointments.module.scss";
-import {
-  timeToMinutes,
-  minutesToTime,
-  generateTimeSlots,
-  getNextDays,
-  generateAvailabilities,
-} from "@/lib/functions/helpers";
-import { AvailabilityType, WeekScheduleInfosType } from "@/types/type";
 import { startOfWeek } from "date-fns";
 import { useSlots } from "@/hooks/useSlots";
 import { fetchAllPractitioners } from "@/api/practitionerApi";
-
-interface Doctor {
-  id: string;
-  name: string;
-  image?: string;
-}
-
-interface DayAvailability {
-  date: string;
-  slots: string[];
-}
+import { Doctor } from "@/types/type";
 
 export default function AppointmentPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
