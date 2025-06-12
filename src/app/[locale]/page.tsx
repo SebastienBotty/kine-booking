@@ -2,9 +2,9 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
-import AuthProvider from "../providers/AuthProvider";
+import AuthProvider from "../../providers/AuthProvider";
 import { getTranslations } from "next-intl/server";
-import LanguageSelector from "../components/LanguageSelector";
+import LanguageSelector from "../../components/LanguageSelector";
 import styles from "@/styles/layout/landing.module.scss";
 
 export default async function HomePage() {
@@ -21,7 +21,7 @@ export default async function HomePage() {
       <header className={styles.header}>
         <h1>{t("home.title")}</h1>
         <p>{t("home.subtitle")}</p>
-        <Link href="#rdv" className={styles.ctaButton}>
+        <Link href="/appointments" className={styles.ctaButton}>
           {t("home.cta")}
         </Link>
       </header>

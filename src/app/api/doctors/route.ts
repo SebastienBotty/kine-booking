@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma/prisma";
+import { prisma } from "@/server/prisma/prisma";
 import { Role } from "@prisma/client";
 import { NextResponse } from "next/server";
 

@@ -7,7 +7,7 @@ import {
   generateTimeSlots,
   getNextDays,
   generateAvailabilities,
-} from "@/app/lib/functions/helpers";
+} from "@/lib/functions/helpers";
 import { AvailabilityType, WeekScheduleInfosType } from "@/types/type";
 import { startOfWeek } from "date-fns";
 

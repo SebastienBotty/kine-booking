@@ -1,4 +1,4 @@
-import { SignInButton } from "@/app/components/AuthButtons";
+import { SignInButton } from "@/components/AuthButtons";
 import React from "react";
 
 function page() {

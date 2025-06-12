@@ -1,8 +1,8 @@
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import AuthProvider from "../providers/AuthProvider";
-import { SignInButton } from "../components/AuthButtons";
+import AuthProvider from "../../providers/AuthProvider";
+import { SignInButton } from "../../components/AuthButtons";
 import { getMessages } from "next-intl/server";
 
 export default async function LocaleLayout({
