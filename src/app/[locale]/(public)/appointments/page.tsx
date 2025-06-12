@@ -57,8 +57,6 @@ export default function AppointmentPage() {
               disabled={currentStart.getTime() < new Date().getTime()}
               onClick={() =>
                 setCurrentStart((d) => {
-                  console.log(currentStart, new Date());
-                  console.log("clicked");
                   const prev = new Date(d);
                   prev.setDate(prev.getDate() - 7);
                   return prev;
@@ -74,7 +72,6 @@ export default function AppointmentPage() {
               onClick={() =>
                 setCurrentStart((d) => {
                   const next = new Date(d);
-                  console.log(currentStart, next);
                   next.setDate(currentStart.getDate() + 7);
                   return next;
                 })
@@ -84,44 +81,51 @@ export default function AppointmentPage() {
             </button>
           </div>
           <ul className={styles["days-list"]}>
-            {availabilities.map((daySlots, index) => (
-              <li key={index} className={styles["day-item"]}>
-                <strong className={styles["day-label"]}>
-                  {daySlots.length > 0
-                    ? new Date(daySlots[0].startTime).toLocaleDateString("fr-FR", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                      })
-                    : new Date(
-                        new Date().setDate(
-                          new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
-                        )
-                      ).toLocaleDateString("fr-FR", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                      })}
-                </strong>
-                <div className={styles.slots}>
-                  {daySlots.length > 0 ? (
-                    daySlots.map((slot) => (
-                      <button
-                        key={slot.id}
-                        className={`${styles["slot-btn"]} ${slot.blocked ? styles["blocked"] : ""}`}
-                      >
-                        {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </button>
-                    ))
-                  ) : (
-                    <span className={styles["no-slot"]}>Aucune disponibilité</span>
-                  )}
-                </div>
-              </li>
-            ))}
+            {availabilities.map((daySlots, index) => {
+              if (index === 0) return null;
+              else {
+                return (
+                  <li key={index} className={styles["day-item"]}>
+                    <strong className={styles["day-label"]}>
+                      {daySlots.length > 0
+                        ? new Date(daySlots[0].startTime).toLocaleDateString("fr-FR", {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                          })
+                        : new Date(
+                            new Date().setDate(
+                              new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
+                            )
+                          ).toLocaleDateString("fr-FR", {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                          })}
+                    </strong>
+                    <div className={styles.slots}>
+                      {daySlots.length > 0 ? (
+                        daySlots.map((slot) => (
+                          <button
+                            key={slot.id}
+                            className={`${styles["slot-btn"]} ${
+                              slot.blocked ? styles["blocked"] : ""
+                            }`}
+                          >
+                            {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </button>
+                        ))
+                      ) : (
+                        <span className={styles["no-slot"]}>Aucune disponibilité</span>
+                      )}
+                    </div>
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
       )}
