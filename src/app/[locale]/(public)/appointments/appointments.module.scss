@@ -91,6 +91,11 @@
   }
 }
 
+.blocked {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .no-slot {
   color: #888;
   font-style: italic;

@@ -1,7 +1,15 @@
 // app/api/slots/route.ts
 import { prisma } from "@/app/lib/prisma/prisma";
 import { NextResponse } from "next/server";
-import { addDays, addMinutes, isBefore, isEqual, startOfDay } from "date-fns";
+import {
+  addDays,
+  addMinutes,
+  endOfWeek,
+  isBefore,
+  isEqual,
+  startOfWeek,
+  startOfDay,
+} from "date-fns";
 import { convertDecimalHourToTime } from "@/app/lib/functions/helpers";
 import { WeekScheduleInfosType } from "@/types/type";
 
@@ -11,16 +19,16 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const practitionerId = searchParams.get("practitionerId");
   const from = searchParams.get("start");
-  const to = searchParams.get("end");
-  console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 
-  if (!practitionerId || !from || !to) {
+  if (!practitionerId || !from) {
     return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
   }
-  console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-  const fromDate = new Date(from);
-  const toDate = new Date(to);
+  const fromDate = startOfWeek(new Date(from), { weekStartsOn: 1 }); // lundi
+  const toDate = endOfWeek(new Date(from), { weekStartsOn: 1 }); // dimanche
+
+  console.log(fromDate);
+  console.log(toDate);
 
   const [availabilities, unavailabilities, appointments] = await Promise.all([
     prisma.availability.findMany({ where: { practitionerId } }),

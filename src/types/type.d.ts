@@ -32,3 +32,11 @@ export type WeekScheduleInfosType = {
   openings: SlotsDecimalType[];
   blockedSlots: BlockedSlotsType[];
 };
+
+export type AvailabilityType = {
+  id: string;
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+  blocked: boolean;
+};
