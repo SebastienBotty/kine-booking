@@ -15,17 +15,21 @@ export default function AppointmentPage() {
   const t = useTranslations();
   const format = useFormatter();
 
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-
   const doctorIdFromURL = searchParams.get("practitioner") || "";
-  const dateFromURL = searchParams.get("startDate");
+  const dateFromURL = searchParams.get("startDate") || "";
+
   const parsedDate =
     dateFromURL && isValid(parseISO(dateFromURL))
-      ? startOfWeek(new Date(dateFromURL), { weekStartsOn: 1 })
+      ? startOfWeek(parseISO(dateFromURL), { weekStartsOn: 1 })
       : startOfWeek(new Date(), { weekStartsOn: 1 });
 
-  const [selectedDoctorId, setSelectedDoctorId] = useState<string>(doctorIdFromURL);
-  const [currentStart, setCurrentStart] = useState<Date>(parsedDate);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string>("");
+  const [currentStart, setCurrentStart] = useState<Date>(
+    startOfWeek(new Date(), { weekStartsOn: 1 })
+  );
+  const [initialized, setInitialized] = useState(false);
+
   const { availabilities, loading, error } = useSlots(selectedDoctorId, currentStart);
 
   useEffect(() => {
@@ -41,14 +45,25 @@ export default function AppointmentPage() {
     loadDoctors();
   }, []);
 
+  // Initialisation unique à partir des paramètres d'URL
   useEffect(() => {
-    const params = new URLSearchParams();
+    if (!initialized) {
+      setSelectedDoctorId(doctorIdFromURL);
+      setCurrentStart(parsedDate);
+      setInitialized(true);
+    }
+  }, [doctorIdFromURL, parsedDate, initialized]);
 
+  // Mise à jour de l'URL seulement après initialisation
+  useEffect(() => {
+    if (!initialized) return;
+
+    const params = new URLSearchParams();
     if (selectedDoctorId) params.set("practitioner", selectedDoctorId);
     if (currentStart) params.set("startDate", currentStart.toISOString().split("T")[0]);
 
     router.replace(`/en/appointments?${params.toString()}`);
-  }, [selectedDoctorId, currentStart]);
+  }, [selectedDoctorId, currentStart, initialized]);
 
   return (
     <div className={styles["appointment-container"]}>
@@ -60,7 +75,6 @@ export default function AppointmentPage() {
         value={selectedDoctorId}
         onChange={(e) => {
           setSelectedDoctorId(e.target.value);
-          console.log(e.target.value);
         }}
       >
         <option value="">--{t("appointments.select")}--</option>
@@ -74,7 +88,6 @@ export default function AppointmentPage() {
       {selectedDoctorId && (
         <div style={{ marginTop: 32 }}>
           <div className={styles["week-header"]}>
-            {" "}
             <button
               aria-label="7 jours précédents"
               className={styles["arrow-btn"]}
@@ -98,7 +111,7 @@ export default function AppointmentPage() {
               onClick={() =>
                 setCurrentStart((d) => {
                   const next = new Date(d);
-                  next.setDate(currentStart.getDate() + 7);
+                  next.setDate(d.getDate() + 7);
                   return next;
                 })
               }
@@ -109,54 +122,50 @@ export default function AppointmentPage() {
           <ul className={styles["days-list"]}>
             {availabilities.map((daySlots, index) => {
               if (index === 0) return null;
-              else {
-                return (
-                  <li key={index} className={styles["day-item"]}>
-                    <strong className={styles["day-label"]}>
-                      {daySlots.length > 0
-                        ? format.dateTime(new Date(daySlots[0].startTime), {
+              return (
+                <li key={index} className={styles["day-item"]}>
+                  <strong className={styles["day-label"]}>
+                    {daySlots.length > 0
+                      ? format.dateTime(new Date(daySlots[0].startTime), {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "long",
+                        })
+                      : format.dateTime(
+                          new Date(
+                            new Date().setDate(
+                              new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
+                            )
+                          ),
+                          {
                             weekday: "long",
                             day: "numeric",
                             month: "long",
-                          })
-                        : format.dateTime(
-                            new Date(
-                              new Date().setDate(
-                                new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
-                              )
-                            ),
-                            {
-                              weekday: "long",
-                              day: "numeric",
-                              month: "long",
-                            }
-                          )}
-                    </strong>
-                    <div className={styles.slots} onClick={() => console.log(daySlots)}>
-                      {!daySlots.every((d) => d.blocked == true) ? (
-                        daySlots.map((slot) => (
-                          <button
-                            key={slot.id}
-                            className={`${styles["slot-btn"]} ${
-                              slot.blocked ? styles["blocked"] : ""
-                            }`}
-                            onClick={() => console.log(slot)}
-                          >
-                            {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </button>
-                        ))
-                      ) : (
-                        <span className={styles["no-slot"]}>
-                          {t("appointments.no-availability")}
-                        </span>
-                      )}
-                    </div>
-                  </li>
-                );
-              }
+                          }
+                        )}
+                  </strong>
+                  <div className={styles.slots} onClick={() => console.log(daySlots)}>
+                    {!daySlots.every((d) => d.blocked == true) ? (
+                      daySlots.map((slot) => (
+                        <button
+                          key={slot.id}
+                          className={`${styles["slot-btn"]} ${
+                            slot.blocked ? styles["blocked"] : ""
+                          }`}
+                          onClick={() => console.log(slot)}
+                        >
+                          {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </button>
+                      ))
+                    ) : (
+                      <span className={styles["no-slot"]}>{t("appointments.no-availability")}</span>
+                    )}
+                  </div>
+                </li>
+              );
             })}
           </ul>
         </div>
