@@ -2,17 +2,29 @@
 
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export const SignInButton = () => {
   const { data: session } = useSession();
-  if (session && session.user) {
+  const pathname = usePathname();
+
+  if (session?.user) {
     return (
       <>
-        {session.user.name} ----- <SignOutButton />
+        {session.user.name} ----- <button onClick={() => signOut()}>Logout</button>
       </>
     );
   } else {
-    return <button onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}>Login</button>;
+    const handleSignIn = () => {
+      const isHome = pathname === "/";
+      if (isHome) {
+        signIn(undefined, { callbackUrl: "/dashboard" });
+      } else {
+        signIn();
+      }
+    };
+
+    return <button onClick={handleSignIn}>Login</button>;
   }
 };
 
