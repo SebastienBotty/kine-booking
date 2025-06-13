@@ -1,19 +1,31 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./appointments.module.scss";
-import { startOfWeek } from "date-fns";
+import { isValid, parseISO, startOfWeek } from "date-fns";
 import { useSlots } from "@/hooks/useSlots";
 import { fetchAllPractitioners } from "@/api/practitionerApi";
 import { Doctor } from "@/types/type";
 import { useTranslations, useFormatter } from "next-intl";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AppointmentPage() {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [selectedDoctorId, setselectedDoctorId] = useState<string>("");
-  const [currentStart, setCurrentStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const t = useTranslations();
   const format = useFormatter();
 
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+
+  const doctorIdFromURL = searchParams.get("practitioner") || "";
+  const dateFromURL = searchParams.get("startDate");
+  const parsedDate =
+    dateFromURL && isValid(parseISO(dateFromURL))
+      ? startOfWeek(new Date(dateFromURL), { weekStartsOn: 1 })
+      : startOfWeek(new Date(), { weekStartsOn: 1 });
+
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string>(doctorIdFromURL);
+  const [currentStart, setCurrentStart] = useState<Date>(parsedDate);
   const { availabilities, loading, error } = useSlots(selectedDoctorId, currentStart);
 
   useEffect(() => {
@@ -29,6 +41,15 @@ export default function AppointmentPage() {
     loadDoctors();
   }, []);
 
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (selectedDoctorId) params.set("practitioner", selectedDoctorId);
+    if (currentStart) params.set("startDate", currentStart.toISOString().split("T")[0]);
+
+    router.replace(`/en/appointments?${params.toString()}`);
+  }, [selectedDoctorId, currentStart]);
+
   return (
     <div className={styles["appointment-container"]}>
       <h2 className={styles.title}>{t("appointments.booking")}</h2>
@@ -38,7 +59,7 @@ export default function AppointmentPage() {
         className={styles["doctor-select"]}
         value={selectedDoctorId}
         onChange={(e) => {
-          setselectedDoctorId(e.target.value);
+          setSelectedDoctorId(e.target.value);
           console.log(e.target.value);
         }}
       >
