@@ -46,3 +46,11 @@ export type WeekScheduleInfosType = {
   openings: SlotsDecimalType[];
   blockedSlots: BlockedSlotsType[];
 };
+
+export interface AuthenticatedRequest extends Request {
+  user?: User;
+  validatedData?: any;
+}
+
+export type MiddlewareHandler = (req: AuthenticatedRequest) => Promise<Response>;
+export type Middleware = (request: Request, handler: MiddlewareHandler) => Promise<Response>;

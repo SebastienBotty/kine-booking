@@ -22,9 +22,10 @@ export default async function middleware(req: NextRequest) {
 
   // 2. Protection des routes sensibles
 
+  const token = await getToken({ req });
+
   // Protection admin - regex plus stricte
   if (adminRoutes.includes(dashboardRoute)) {
-    const token = await getToken({ req });
     if (!token || token.role !== "admin") {
       return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
     }
@@ -33,7 +34,6 @@ export default async function middleware(req: NextRequest) {
   // Protection doctor (et admin)
   if (doctorRoutes.includes(dashboardRoute)) {
     console.log("Protection doctor activée");
-    const token = await getToken({ req });
     if (!token || (token.role !== "practitioner" && token.role !== "admin")) {
       return NextResponse.redirect(new URL(`/${locale}/unauthorized`, req.url));
     }
@@ -41,7 +41,6 @@ export default async function middleware(req: NextRequest) {
 
   // Protection profile (tous utilisateurs connectés)
   if (/^\/[a-z]{2}\/dashboard\/profile(\/.*)?$/.test(pathname)) {
-    const token = await getToken({ req });
     if (!token) {
       return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
     }
