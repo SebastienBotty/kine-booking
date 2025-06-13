@@ -85,3 +85,9 @@ export function withOwnership(getUserIdFromRequest: (req: AuthenticatedRequest) 
     });
   };
 }
+
+export function getUserIdFromRequest(req: AuthenticatedRequest): string | null {
+  const url = new URL(req.url);
+  const pathParts = url.pathname.split("/");
+  return pathParts[pathParts.length - 1] || null;
+}
