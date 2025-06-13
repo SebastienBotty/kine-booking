@@ -37,5 +37,12 @@
   "unauthorized": {
     "message": "You're not authorized to see this page",
     "rediction": "Automatic redirection in"
+  },
+  "appointments": {
+    "booking": "Book appointment",
+    "choosePractitioner": "Choose a practitioner",
+    "select": "Select",
+    "no-availability": "No availability",
+    "currentWeek": "Week of "
   }
 }

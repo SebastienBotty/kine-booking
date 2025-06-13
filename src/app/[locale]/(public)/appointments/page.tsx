@@ -5,11 +5,14 @@ import { startOfWeek } from "date-fns";
 import { useSlots } from "@/hooks/useSlots";
 import { fetchAllPractitioners } from "@/api/practitionerApi";
 import { Doctor } from "@/types/type";
+import { useTranslations, useFormatter } from "next-intl";
 
 export default function AppointmentPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctorId, setselectedDoctorId] = useState<string>("");
   const [currentStart, setCurrentStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));
+  const t = useTranslations();
+  const format = useFormatter();
 
   const { availabilities, loading, error } = useSlots(selectedDoctorId, currentStart);
 
@@ -28,8 +31,8 @@ export default function AppointmentPage() {
 
   return (
     <div className={styles["appointment-container"]}>
-      <h2 className={styles.title}>Prendre rendez-vous</h2>
-      <label htmlFor="doctor-select">Choisissez un praticien :</label>
+      <h2 className={styles.title}>{t("appointments.booking")}</h2>
+      <label htmlFor="doctor-select">{t("appointments.choosePractitioner")}</label>
       <select
         id="doctor-select"
         className={styles["doctor-select"]}
@@ -39,7 +42,7 @@ export default function AppointmentPage() {
           console.log(e.target.value);
         }}
       >
-        <option value="">-- Sélectionner --</option>
+        <option value="">--{t("appointments.select")}--</option>
         {doctors.map((doc) => (
           <option key={doc.id} value={doc.id}>
             {doc.name}
@@ -65,7 +68,9 @@ export default function AppointmentPage() {
             >
               ➡️
             </button>
-            <span>Semaine du {currentStart.toLocaleDateString()}</span>
+            <span>
+              {t("appointments.currentWeek")} {format.dateTime(currentStart)}
+            </span>
             <button
               aria-label="7 jours suivants"
               className={styles["arrow-btn"]}
@@ -88,29 +93,33 @@ export default function AppointmentPage() {
                   <li key={index} className={styles["day-item"]}>
                     <strong className={styles["day-label"]}>
                       {daySlots.length > 0
-                        ? new Date(daySlots[0].startTime).toLocaleDateString("fr-FR", {
+                        ? format.dateTime(new Date(daySlots[0].startTime), {
                             weekday: "long",
                             day: "numeric",
                             month: "long",
                           })
-                        : new Date(
-                            new Date().setDate(
-                              new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
-                            )
-                          ).toLocaleDateString("fr-FR", {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "long",
-                          })}
+                        : format.dateTime(
+                            new Date(
+                              new Date().setDate(
+                                new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
+                              )
+                            ),
+                            {
+                              weekday: "long",
+                              day: "numeric",
+                              month: "long",
+                            }
+                          )}
                     </strong>
-                    <div className={styles.slots}>
-                      {daySlots.length > 0 ? (
+                    <div className={styles.slots} onClick={() => console.log(daySlots)}>
+                      {!daySlots.every((d) => d.blocked == true) ? (
                         daySlots.map((slot) => (
                           <button
                             key={slot.id}
                             className={`${styles["slot-btn"]} ${
                               slot.blocked ? styles["blocked"] : ""
                             }`}
+                            onClick={() => console.log(slot)}
                           >
                             {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
                               hour: "2-digit",
@@ -119,7 +128,9 @@ export default function AppointmentPage() {
                           </button>
                         ))
                       ) : (
-                        <span className={styles["no-slot"]}>Aucune disponibilité</span>
+                        <span className={styles["no-slot"]}>
+                          {t("appointments.no-availability")}
+                        </span>
                       )}
                     </div>
                   </li>

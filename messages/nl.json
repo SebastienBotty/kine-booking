@@ -37,5 +37,13 @@
   "unauthorized": {
     "message": "U bent niet gemachtigd om deze pagina te bekijken",
     "redirection": "Automatische doorverwijzing over"
+  },
+  "appointments": {
+    "booking": "Afspraak maken",
+    "select": "Selecteren",
+    "choosePractitioner": "Kies een behandelaar",
+
+    "no-availability": "Geen beschikbaarheid",
+    "currentWeek": "Week van "
   }
 }
