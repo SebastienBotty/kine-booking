@@ -6,7 +6,8 @@ export const userSchema = z.object({
   email: z.string().email(),
   emailVerified: z.string().datetime().optional().nullable(),
   image: z.string().url().optional().nullable(),
-  role: z.enum(["user", "patient", "practitioner", "admin"]),
+  role: z.enum(["user", "practitioner", "admin"]),
+  phoneNumber: z.string(),
 
   accounts: z.array(z.any()).optional(),
   sessions: z.array(z.any()).optional(),

@@ -1,16 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styles from "./appointments.module.scss";
 import { isValid, parseISO, startOfWeek } from "date-fns";
 import { useSlots } from "@/hooks/useSlots";
 import { fetchAllPractitioners } from "@/api/practitionerApi";
-import { Doctor } from "@/types/type";
+import { AvailabilityType, Doctor, SlotsType } from "@/types/type";
 import { useTranslations, useFormatter } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
+import Modal from "@/components/Modal";
+import { useSession } from "next-auth/react";
+import AppointmentSummary from "@/components/AppointmentSummary";
+import { SignInButton } from "@/components/AuthButtons";
+import { getMondayAt5AM } from "@/lib/functions/helpers";
 
 export default function AppointmentPage() {
+  const { data: session } = useSession();
+
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
   const t = useTranslations();
   const format = useFormatter();
@@ -18,19 +26,27 @@ export default function AppointmentPage() {
   const doctorIdFromURL = searchParams.get("practitioner") || "";
   const dateFromURL = searchParams.get("startDate") || "";
 
-  const parsedDate =
-    dateFromURL && isValid(parseISO(dateFromURL))
-      ? startOfWeek(parseISO(dateFromURL), { weekStartsOn: 1 })
-      : startOfWeek(new Date(), { weekStartsOn: 1 });
+  // Toujours s'assurer que parsedDate est un début de semaine
+  const parsedDate = useMemo(() => {
+    if (dateFromURL && isValid(parseISO(dateFromURL))) {
+      let date = new Date();
+      return getMondayAt5AM(parseISO(dateFromURL));
+    }
+    return getMondayAt5AM();
+  }, [dateFromURL]);
 
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>("");
-  const [currentStart, setCurrentStart] = useState<Date>(
-    startOfWeek(new Date(), { weekStartsOn: 1 })
-  );
+  const [selectedSlot, setSelectedSlot] = useState<AvailabilityType | null>(null);
+  const [currentStart, setCurrentStart] = useState<Date>(parsedDate);
   const [initialized, setInitialized] = useState(false);
 
   const { availabilities, loading, error } = useSlots(selectedDoctorId, currentStart);
+
+  const handleSlotClick = (slot: AvailabilityType) => {
+    setSelectedSlot(slot);
+    setShowConfirmationModal(true);
+  };
 
   useEffect(() => {
     const loadDoctors = async () => {
@@ -60,13 +76,32 @@ export default function AppointmentPage() {
 
     const params = new URLSearchParams();
     if (selectedDoctorId) params.set("practitioner", selectedDoctorId);
-    if (currentStart) params.set("startDate", currentStart.toISOString().split("T")[0]);
+    if (currentStart) {
+      // Stocker la date telle quelle (currentStart est déjà un startOfWeek)
+      params.set("startDate", currentStart.toISOString().split("T")[0]);
+    }
 
     router.replace(`/en/appointments?${params.toString()}`);
-  }, [selectedDoctorId, currentStart, initialized]);
+  }, [selectedDoctorId, currentStart, initialized, router]);
 
   return (
     <div className={styles["appointment-container"]}>
+      {showConfirmationModal && selectedSlot && (
+        <Modal isOpen={showConfirmationModal} close={() => setShowConfirmationModal(false)}>
+          {session?.user ? (
+            <AppointmentSummary
+              patientId={session.user.id}
+              creatorId={session.user.id}
+              doctor={doctors.find((d) => d.id === selectedDoctorId)!}
+              startTime={new Date(selectedSlot.startTime)}
+              endTime={new Date(selectedSlot.endTime)}
+            />
+          ) : (
+            <SignInButton />
+          )}
+        </Modal>
+      )}
+
       <h2 className={styles.title}>{t("appointments.booking")}</h2>
       <label htmlFor="doctor-select">{t("appointments.choosePractitioner")}</label>
       <select
@@ -96,7 +131,7 @@ export default function AppointmentPage() {
                 setCurrentStart((d) => {
                   const prev = new Date(d);
                   prev.setDate(prev.getDate() - 7);
-                  return prev;
+                  return getMondayAt5AM(prev);
                 })
               }
             >
@@ -112,7 +147,7 @@ export default function AppointmentPage() {
                 setCurrentStart((d) => {
                   const next = new Date(d);
                   next.setDate(d.getDate() + 7);
-                  return next;
+                  return getMondayAt5AM(next);
                 })
               }
             >
@@ -152,7 +187,7 @@ export default function AppointmentPage() {
                           className={`${styles["slot-btn"]} ${
                             slot.blocked ? styles["blocked"] : ""
                           }`}
-                          onClick={() => console.log(slot)}
+                          onClick={() => handleSlotClick(slot)}
                         >
                           {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
                             hour: "2-digit",

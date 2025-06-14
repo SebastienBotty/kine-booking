@@ -1,5 +1,23 @@
-import { AppointmentStatus } from "@prisma/client";
 import { prisma } from "../prisma/prisma";
+import { PostAppointmentType } from "@/types/type";
+
+export async function postAppointment(appointmentData: PostAppointmentType) {
+  if (
+    appointmentData.createdByRole === "user" &&
+    appointmentData.patientId !== appointmentData.creatorId
+  ) {
+    throw new Error("Un patient  ne peut pas prendre un rdv pour un autre patient");
+  }
+
+  try {
+    return prisma.appointment.create({
+      data: appointmentData,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la création d'un rdv", error);
+    throw new Error("Impossible de créer un rdv");
+  }
+}
 
 export const getAppointments = (practitionerId: string, fromDate: Date, toDate: Date) => {
   return prisma.appointment.findMany({
@@ -27,19 +45,5 @@ export async function findConflictingAppointment({
       status: { not: "CANCELLED" },
       AND: [{ startTime: { lt: endTime } }, { endTime: { gt: startTime } }],
     },
-  });
-}
-
-export async function createAppointment(data: {
-  practitionerId: string;
-  patientId: string;
-  startTime: Date;
-  endTime: Date;
-  status: AppointmentStatus;
-  patientNote: string | undefined;
-  practionnerNote: string | undefined;
-}) {
-  return prisma.appointment.create({
-    data,
   });
 }

@@ -121,3 +121,25 @@ export function generateAvailabilities(
 
   return weeklySlots;
 }
+
+export function getMondayAt5AM(date?: Date): Date {
+  const targetDate = date || new Date();
+
+  // Obtenir le jour de la semaine (0 = dimanche, 1 = lundi, etc.)
+  const dayOfWeek = targetDate.getDay();
+
+  // Calculer combien de jours il faut reculer pour arriver au lundi
+  // Si c'est dimanche (0), on recule de 6 jours
+  // Si c'est lundi (1), on recule de 0 jour
+  // Si c'est mardi (2), on recule de 1 jour, etc.
+  const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+
+  // Créer une nouvelle date pour le lundi
+  const monday = new Date(targetDate);
+  monday.setDate(targetDate.getDate() - daysToSubtract);
+
+  // Définir l'heure à 5h00 du matin
+  monday.setHours(5, 0, 0, 0);
+
+  return monday;
+}

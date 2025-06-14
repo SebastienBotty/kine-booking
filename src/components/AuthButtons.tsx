@@ -11,7 +11,7 @@ export const SignInButton = () => {
   if (session?.user) {
     return (
       <>
-        {session.user.name} ----- <button onClick={() => signOut()}>Logout</button>
+        {session.user.name} ----- <SignOutButton />
       </>
     );
   } else {

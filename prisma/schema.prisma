@@ -20,6 +20,7 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  phoneNumber   String
   accounts      Account[]
   sessions      Session[]
 
@@ -33,7 +34,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   practitionerAppointments Appointment[] @relation("PractitionerAppointments")
-
+  creatorAppointments Appointment[] @relation("CreatorAppointments")
 }
  
 model Account {
@@ -88,6 +89,11 @@ model Appointment {
   patientNote    String?
   practionnerNote String?
   createdAt      DateTime @default(now())
+  creator        User     @relation("CreatorAppointments", fields: [creatorId], references: [id])
+  creatorId      String
+  createdByRole  Role
+  cancelledByRole Role
+
 }
 
 model Availability {
@@ -111,7 +117,6 @@ model Unavailability {
 
 enum Role {
   user
-  patient
   practitioner
   admin
 }

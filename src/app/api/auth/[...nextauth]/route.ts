@@ -5,6 +5,7 @@ import { prisma } from "../../../../server/prisma/prisma";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
+import { Role } from "@prisma/client";
 
 const googleProviderOptions = GoogleProvider({
   clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -16,6 +17,7 @@ const googleProviderOptions = GoogleProvider({
       email: profile.email,
       image: profile.picture,
       role: profile.role ? profile.role : "user",
+      phoneNumber: "",
     };
   },
 });
@@ -30,6 +32,7 @@ const facebookProviderOptions = FacebookProvider({
       email: profile.email,
       image: profile.picture?.data?.url,
       role: profile.role ? profile.role : "user",
+      phoneNumber: "",
     };
   },
 });
@@ -43,7 +46,7 @@ const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [googleProviderOptions, facebookProviderOptions],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }): Promise<any> {
       // On fusionne les infos utilisateur dans le token, mais on s'assure que les champs obligatoires ne sont jamais null
       if (user) {
         return {
@@ -60,6 +63,9 @@ const authOptions: AuthOptions = {
             ? { emailVerified: (user as any).emailVerified ?? null }
             : { emailVerified: null }),
           ...(user && "role" in user ? { role: (user as any).role ?? "user" } : { role: "user" }),
+          ...(user && "phoneNumber" in user && user.phoneNumber
+            ? { phoneNumber: user.phoneNumber }
+            : { phoneNumber: "" }),
         };
       }
       // Si pas de nouvel utilisateur, on garde le token tel quel
@@ -75,7 +81,8 @@ const authOptions: AuthOptions = {
         session.user.createdAt = token.createdAt as Date;
         session.user.updatedAt = token.updatedAt as Date;
         session.user.emailVerified = token.emailVerified as Date | null;
-        session.user.role = token.role;
+        session.user.role = token.role as Role;
+        session.user.phoneNumber = token.phoneNumber as string;
       }
       return session;
     },

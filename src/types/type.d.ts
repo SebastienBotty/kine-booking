@@ -12,6 +12,18 @@ declare module "next-auth/jwt" {
   type JWT = User;
 }
 
+export type PostAppointmentType = {
+  practitionerId: string;
+  patientId: string;
+  startTime: Date;
+  endTime: Date;
+  status: AppointmentStatus;
+  patientNote: string | undefined;
+  practionnerNote: string | undefined;
+  creatorId: string;
+  createdByRole: Role;
+  cancelledByRole: Role;
+};
 export type AvailabilityType = {
   id: string;
   dayOfWeek: number;
