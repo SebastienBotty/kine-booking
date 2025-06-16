@@ -45,5 +45,8 @@
 
     "no-availability": "Aucune disponibilité",
     "currentWeek": "Semaine du "
+  },
+  "AppointmentSummary": {
+    "textAreaNote": "Ajouter une note..."
   }
 }

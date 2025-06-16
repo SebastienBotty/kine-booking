@@ -5,7 +5,7 @@ import { isValid, parseISO, startOfWeek } from "date-fns";
 import { useSlots } from "@/hooks/useSlots";
 import { fetchAllPractitioners } from "@/api/practitionerApi";
 import { AvailabilityType, Doctor, SlotsType } from "@/types/type";
-import { useTranslations, useFormatter } from "next-intl";
+import { useTranslations, useFormatter, useLocale } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
@@ -22,6 +22,7 @@ export default function AppointmentPage() {
 
   const t = useTranslations();
   const format = useFormatter();
+  const locale = useLocale();
 
   const doctorIdFromURL = searchParams.get("practitioner") || "";
   const dateFromURL = searchParams.get("startDate") || "";
@@ -29,7 +30,6 @@ export default function AppointmentPage() {
   // Toujours s'assurer que parsedDate est un début de semaine
   const parsedDate = useMemo(() => {
     if (dateFromURL && isValid(parseISO(dateFromURL))) {
-      let date = new Date();
       return getMondayAt5AM(parseISO(dateFromURL));
     }
     return getMondayAt5AM();
@@ -41,11 +41,36 @@ export default function AppointmentPage() {
   const [currentStart, setCurrentStart] = useState<Date>(parsedDate);
   const [initialized, setInitialized] = useState(false);
 
-  const { availabilities, loading, error } = useSlots(selectedDoctorId, currentStart);
+  const { availabilities, setAvailabilities, loading, error } = useSlots(
+    selectedDoctorId,
+    currentStart
+  );
 
   const handleSlotClick = (slot: AvailabilityType) => {
     setSelectedSlot(slot);
     setShowConfirmationModal(true);
+  };
+
+  const toggleSlotAvailability = (slotId: string, block: boolean) => {
+    const slotDate = new Date(slotId);
+    const day = slotDate.getDay();
+    setAvailabilities((prev) => {
+      const newAvailabilities = [...prev];
+      const dayArr = newAvailabilities[day];
+      console.log("XXXXXXX");
+      console.log(dayArr);
+      console.log(new Date(Number(dayArr[0].id)));
+      console.log(slotId);
+      console.log("XXXXXXX");
+      const target = dayArr.find(
+        (slot) => new Date(Number(slot.id)).getTime() === new Date(slotId).getTime()
+      );
+      console.log(target);
+      if (!target) return prev;
+      target.blocked = block;
+      console.log("LELLALALALALALALALALLA");
+      return newAvailabilities;
+    });
   };
 
   useEffect(() => {
@@ -81,7 +106,7 @@ export default function AppointmentPage() {
       params.set("startDate", currentStart.toISOString().split("T")[0]);
     }
 
-    router.replace(`/en/appointments?${params.toString()}`);
+    router.replace(`/${locale}/appointments?${params.toString()}`);
   }, [selectedDoctorId, currentStart, initialized, router]);
 
   return (
@@ -95,6 +120,8 @@ export default function AppointmentPage() {
               doctor={doctors.find((d) => d.id === selectedDoctorId)!}
               startTime={new Date(selectedSlot.startTime)}
               endTime={new Date(selectedSlot.endTime)}
+              formatDate={format.dateTime}
+              toggleSlotAvailability={toggleSlotAvailability}
             />
           ) : (
             <SignInButton />
@@ -110,6 +137,7 @@ export default function AppointmentPage() {
         value={selectedDoctorId}
         onChange={(e) => {
           setSelectedDoctorId(e.target.value);
+          console.log(doctors);
         }}
       >
         <option value="">--{t("appointments.select")}--</option>
@@ -196,7 +224,7 @@ export default function AppointmentPage() {
                         </button>
                       ))
                     ) : (
-                      <span className={styles["no-slot"]}>{t("appointments.no-availability")}</span>
+                      <div className={styles["no-slot"]}>{t("appointments.no-availability")}</div>
                     )}
                   </div>
                 </li>

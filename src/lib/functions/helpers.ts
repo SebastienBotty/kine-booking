@@ -110,7 +110,7 @@ export function generateAvailabilities(
       const isPassed = slot.getTime() <= now.getTime();
 
       weeklySlots[dayOfWeek].push({
-        id: `day-${slot.getDay()}-time-${slot.getHours()}h${slot.getMinutes()}`,
+        id: `${slot.getTime()}`,
         dayOfWeek,
         startTime: slot.toISOString(),
         endTime: slotEnd.toISOString(),

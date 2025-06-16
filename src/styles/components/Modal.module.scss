@@ -13,7 +13,7 @@
 }
 
 .modal-content {
-  border-radius: 2.5rem;
+  border-radius: 2.5rem 0 2.5rem 2.5rem;
   background-color: white;
   padding: 2rem;
   min-width: 20rem;
@@ -23,6 +23,26 @@
   transform: translateY(0);
   animation: slideIn 0.3s ease-out;
   position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  border: 1px inset black;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: white;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
 }
 
 @keyframes fadeIn {

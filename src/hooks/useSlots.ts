@@ -34,5 +34,5 @@ export function useSlots(practitionerId: string | null, currentStart: Date) {
       .finally(() => setLoading(false));
   }, [practitionerId, currentStart]);
 
-  return { availabilities, loading, error };
+  return { availabilities, setAvailabilities, loading, error };
 }

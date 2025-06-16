@@ -26,12 +26,18 @@ export async function withAuth(
       image: token.image as string | null,
       createdAt: token.createdAt as Date,
       updatedAt: token.updatedAt as Date,
+      phoneNumber: token.phoneNumber as string,
     };
     console.log(authenticatedRequest);
     return await handler(authenticatedRequest);
   } catch (error) {
-    console.error("Erreur d'authentification:", error);
-    return NextResponse.json({ error: "Token invalide" }, { status: 401 });
+    if (error instanceof Error) {
+      console.error("Erreur d'authentification:", error);
+      return NextResponse.json({ error: error.message }, { status: 401 });
+    } else {
+      console.error("Erreur d'authentification:", error);
+      return NextResponse.json({ error: "unknow error" }, { status: 401 });
+    }
   }
 }
 

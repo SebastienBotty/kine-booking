@@ -44,5 +44,8 @@
     "select": "Select",
     "no-availability": "No availability",
     "currentWeek": "Week of "
+  },
+  "AppointmentSummary": {
+    "textAreaNote": "Add a note..."
   }
 }

@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import { User } from "@prisma/client";
+import { User, Role } from "@prisma/client";
 import { JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
@@ -22,7 +22,7 @@ export type PostAppointmentType = {
   practionnerNote: string | undefined;
   creatorId: string;
   createdByRole: Role;
-  cancelledByRole: Role;
+  cancelledByRole: Role?;
 };
 export type AvailabilityType = {
   id: string;

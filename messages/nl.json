@@ -45,5 +45,8 @@
 
     "no-availability": "Geen beschikbaarheid",
     "currentWeek": "Week van "
+  },
+  "AppointmentSummary": {
+    "textAreaNote": "Een notitie toevoegen..."
   }
 }

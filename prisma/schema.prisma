@@ -92,7 +92,7 @@ model Appointment {
   creator        User     @relation("CreatorAppointments", fields: [creatorId], references: [id])
   creatorId      String
   createdByRole  Role
-  cancelledByRole Role
+  cancelledByRole Role? 
 
 }
 

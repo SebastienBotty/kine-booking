@@ -23,7 +23,7 @@ export const postAppointment = async (data: {
   creatorId: string;
   startTime: Date;
   endTime: Date;
-  patientNote: string;
+  patientNote?: string;
 }) => {
   const res = await fetch("/api/auth/appointment", {
     method: "POST",
@@ -34,6 +34,7 @@ export const postAppointment = async (data: {
 
   if (!res.ok) {
     const errorData = await res.json();
+    console.error(errorData);
     throw new Error(errorData.error || "Erreur inconnue");
   }
 
