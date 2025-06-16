@@ -1,0 +1,80 @@
+{
+  "home": {
+    "title": "Physiotherapy Center Health & Movement",
+    "subtitle": "Regain mobility, well-being, and energy with our expert physiotherapists",
+    "cta": "Make an appointment",
+    "aboutTitle": "About us",
+    "aboutText": "Located in the heart of the city, our physiotherapy center welcomes you in a modern and warm environment. Our team supports you in regaining mobility and improving your quality of life.",
+    "servicesTitle": "Our services",
+    "services": [
+      "Functional rehabilitation",
+      "Sports physiotherapy",
+      "Therapeutic massages",
+      "Respiratory physiotherapy",
+      "Postural prevention and advice"
+    ],
+    "teamTitle": "Our team",
+    "team": [
+      {
+        "name": "Marie Dupont",
+        "role": "Certified physiotherapist"
+      },
+      {
+        "name": "Lucas Martin",
+        "role": "Sports specialist"
+      }
+    ],
+    "bookingTitle": "Make an appointment",
+    "bookingCta": "Book a session",
+    "contactTitle": "Contact",
+    "address": "Address: 123 Rue de la Santé, 75000 Paris",
+    "phone": "Phone: 01 23 45 67 89",
+    "email": "Email: contact@kine-sante.fr",
+    "legal": "Legal notice",
+    "privacy": "Privacy policy",
+    "copyright": "© 2024 Physiotherapy Center Health & Movement. All rights reserved."
+  },
+  "unauthorized": {
+    "message": "You're not authorized to see this page",
+    "rediction": "Automatic redirection in"
+  },
+  "appointments": {
+    "booking": "Book appointment",
+    "choosePractitioner": "Choose a practitioner",
+    "select": "Select",
+    "no-availability": "No availability",
+    "currentWeek": "Week of "
+  },
+  "AppointmentSummary": {
+    "textAreaNote": "Add a note...",
+    "booking": {
+      "confirmed": "Appointment confirmed",
+      "confirmedDetails": "Find the details in the 'My appointments' tab"
+    }
+  },
+  "fail": "Failure",
+  "errors": {
+    "network": {
+      "offline": "No internet connection. Please check your connection.",
+      "unexpected": "An unexpected error occurred."
+    },
+    "appointment": {
+      "slot_already_taken": "This time slot is no longer available. Please choose another one.",
+      "unauthorized_patient_booking": "You cannot book an appointment for another patient.",
+      "self_appointment_not_allowed": "You cannot book an appointment with yourself.",
+      "practitioner_not_found": "The selected practitioner was not found.",
+      "patient_not_found": "Patient not found."
+    },
+    "validation": {
+      "invalid_data": "The entered information is invalid. Please check."
+    },
+    "auth": {
+      "unauthorized": "You must be logged in to perform this action.",
+      "forbidden": "You do not have the necessary permissions."
+    },
+    "server": {
+      "internal_error": "Server error. Please try again later."
+    },
+    "generic": "An error occurred."
+  }
+}

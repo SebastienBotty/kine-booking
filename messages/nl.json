@@ -1,0 +1,81 @@
+{
+  "home": {
+    "title": "Kinesitherapiecentrum Gezondheid & Beweging",
+    "subtitle": "Hervind mobiliteit, welzijn en energie met onze deskundige kinesitherapeuten",
+    "cta": "Afspraak maken",
+    "aboutTitle": "Over ons",
+    "aboutText": "Ons kinesitherapiecentrum, gelegen in het hart van de stad, verwelkomt u in een moderne en warme omgeving. Ons team helpt u om uw mobiliteit te herstellen en uw levenskwaliteit te verbeteren.",
+    "servicesTitle": "Onze diensten",
+    "services": [
+      "Functionele revalidatie",
+      "Sportkinesitherapie",
+      "Therapeutische massages",
+      "Respiratoire kinesitherapie",
+      "Preventie en houdingsadvies"
+    ],
+    "teamTitle": "Ons team",
+    "team": [
+      {
+        "name": "Marie Dupont",
+        "role": "Gediplomeerde kinesitherapeute"
+      },
+      {
+        "name": "Lucas Martin",
+        "role": "Sportdeskundige"
+      }
+    ],
+    "bookingTitle": "Afspraak maken",
+    "bookingCta": "Sessie boeken",
+    "contactTitle": "Contact",
+    "address": "Adres: Rue de la Santé 123, 75000 Parijs",
+    "phone": "Telefoon: 01 23 45 67 89",
+    "email": "E-mail: contact@kine-sante.fr",
+    "legal": "Wettelijke vermeldingen",
+    "privacy": "Privacybeleid",
+    "copyright": "© 2024 Kinesitherapiecentrum Gezondheid & Beweging. Alle rechten voorbehouden."
+  },
+  "unauthorized": {
+    "message": "U bent niet gemachtigd om deze pagina te bekijken",
+    "redirection": "Automatische doorverwijzing over"
+  },
+  "appointments": {
+    "booking": "Afspraak maken",
+    "select": "Selecteren",
+    "choosePractitioner": "Kies een behandelaar",
+
+    "no-availability": "Geen beschikbaarheid",
+    "currentWeek": "Week van "
+  },
+  "AppointmentSummary": {
+    "textAreaNote": "Voeg een notitie toe...",
+    "booking": {
+      "confirmed": "Afspraak bevestigd",
+      "confirmedDetails": "Bekijk de details in het tabblad 'Mijn afspraken'"
+    }
+  },
+  "fail": "Mislukt",
+  "errors": {
+    "network": {
+      "offline": "Geen internetverbinding. Controleer uw verbinding.",
+      "unexpected": "Er is een onverwachte fout opgetreden."
+    },
+    "appointment": {
+      "slot_already_taken": "Dit tijdslot is niet meer beschikbaar. Kies een ander tijdslot.",
+      "unauthorized_patient_booking": "U kunt geen afspraak maken voor een andere patiënt.",
+      "self_appointment_not_allowed": "U kunt geen afspraak maken bij uzelf.",
+      "practitioner_not_found": "De geselecteerde zorgverlener is niet gevonden.",
+      "patient_not_found": "Patiënt niet gevonden."
+    },
+    "validation": {
+      "invalid_data": "De ingevoerde informatie is ongeldig. Controleer alstublieft."
+    },
+    "auth": {
+      "unauthorized": "U moet ingelogd zijn om deze actie uit te voeren.",
+      "forbidden": "U heeft niet de benodigde rechten."
+    },
+    "server": {
+      "internal_error": "Serverfout. Probeer het later opnieuw."
+    },
+    "generic": "Er is een fout opgetreden."
+  }
+}

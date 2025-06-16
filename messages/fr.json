@@ -1,0 +1,81 @@
+{
+  "home": {
+    "title": "Centre de Kinésithérapie Santé & Mouvement",
+    "subtitle": "Retrouvez mobilité, bien-être et énergie avec nos experts kinésithérapeutes",
+    "cta": "Prendre rendez-vous",
+    "aboutTitle": "À propos de nous",
+    "aboutText": "Situé au cœur de la ville, notre centre de kinésithérapie vous accueille dans un espace moderne et chaleureux. Notre équipe vous accompagne pour retrouver votre mobilité et améliorer votre qualité de vie.",
+    "servicesTitle": "Nos services",
+    "services": [
+      "Rééducation fonctionnelle",
+      "Kinésithérapie du sport",
+      "Massages thérapeutiques",
+      "Physiothérapie respiratoire",
+      "Prévention et conseils posturaux"
+    ],
+    "teamTitle": "Notre équipe",
+    "team": [
+      {
+        "name": "Marie Dupont",
+        "role": "Kinésithérapeute diplômée"
+      },
+      {
+        "name": "Lucas Martin",
+        "role": "Spécialiste sport"
+      }
+    ],
+    "bookingTitle": "Prendre rendez-vous",
+    "bookingCta": "Réserver une séance",
+    "contactTitle": "Contact",
+    "address": "Adresse : 123 rue de la Santé, 75000 Paris",
+    "phone": "Téléphone : 01 23 45 67 89",
+    "email": "Email : contact@kine-sante.fr",
+    "legal": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "copyright": "© 2024 Centre de Kinésithérapie Santé & Mouvement. Tous droits réservés."
+  },
+  "unauthorized": {
+    "message": "Vous n’êtes pas autorisé·e à voir cette page",
+    "redirection": "Redirection automatique dans"
+  },
+  "appointments": {
+    "booking": "Prendre rendez-vous",
+    "select": "Sélectionner",
+    "choosePractitioner": "Choisissez un praticien",
+
+    "no-availability": "Aucune disponibilité",
+    "currentWeek": "Semaine du "
+  },
+  "AppointmentSummary": {
+    "textAreaNote": "Ajouter une note...",
+    "booking": {
+      "confirmed": "Rendez-vous confirmé",
+      "confirmedDetails": "Retrouvez les informations dans l'onget 'mes rendez-vous"
+    }
+  },
+  "fail": "Échec",
+  "errors": {
+    "network": {
+      "offline": "Pas de connexion internet. Vérifiez votre connexion.",
+      "unexpected": "Une erreur inattendue s'est produite."
+    },
+    "appointment": {
+      "slot_already_taken": "Ce créneau n'est plus disponible. Veuillez en choisir un autre.",
+      "unauthorized_patient_booking": "Vous ne pouvez pas prendre de rendez-vous pour un autre patient.",
+      "self_appointment_not_allowed": "Vous ne pouvez pas prendre de rendez-vous chez vous-même.",
+      "practitioner_not_found": "Le praticien sélectionné est introuvable.",
+      "patient_not_found": "Patient introuvable."
+    },
+    "validation": {
+      "invalid_data": "Les informations saisies sont invalides. Veuillez vérifier."
+    },
+    "auth": {
+      "unauthorized": "Vous devez être connecté pour effectuer cette action.",
+      "forbidden": "Vous n'avez pas les permissions nécessaires."
+    },
+    "server": {
+      "internal_error": "Erreur du serveur. Veuillez réessayer plus tard."
+    },
+    "generic": "Une erreur est survenue."
+  }
+}
