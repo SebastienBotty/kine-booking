@@ -57,18 +57,12 @@ export default function AppointmentPage() {
     setAvailabilities((prev) => {
       const newAvailabilities = [...prev];
       const dayArr = newAvailabilities[day];
-      console.log("XXXXXXX");
-      console.log(dayArr);
-      console.log(new Date(Number(dayArr[0].id)));
-      console.log(slotId);
-      console.log("XXXXXXX");
       const target = dayArr.find(
         (slot) => new Date(Number(slot.id)).getTime() === new Date(slotId).getTime()
       );
-      console.log(target);
+
       if (!target) return prev;
       target.blocked = block;
-      console.log("LELLALALALALALALALALLA");
       return newAvailabilities;
     });
   };
@@ -122,6 +116,7 @@ export default function AppointmentPage() {
               endTime={new Date(selectedSlot.endTime)}
               formatDate={format.dateTime}
               toggleSlotAvailability={toggleSlotAvailability}
+              closeModal={() => setShowConfirmationModal(false)}
             />
           ) : (
             <SignInButton />

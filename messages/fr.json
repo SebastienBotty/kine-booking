@@ -47,6 +47,35 @@
     "currentWeek": "Semaine du "
   },
   "AppointmentSummary": {
-    "textAreaNote": "Ajouter une note..."
+    "textAreaNote": "Ajouter une note...",
+    "booking": {
+      "confirmed": "Rendez-vous confirmé",
+      "confirmedDetails": "Retrouvez les informations dans l'onget 'mes rendez-vous"
+    }
+  },
+  "fail": "Échec",
+  "errors": {
+    "network": {
+      "offline": "Pas de connexion internet. Vérifiez votre connexion.",
+      "unexpected": "Une erreur inattendue s'est produite."
+    },
+    "appointment": {
+      "slot_already_taken": "Ce créneau n'est plus disponible. Veuillez en choisir un autre.",
+      "unauthorized_patient_booking": "Vous ne pouvez pas prendre de rendez-vous pour un autre patient.",
+      "self_appointment_not_allowed": "Vous ne pouvez pas prendre de rendez-vous chez vous-même.",
+      "practitioner_not_found": "Le praticien sélectionné est introuvable.",
+      "patient_not_found": "Patient introuvable."
+    },
+    "validation": {
+      "invalid_data": "Les informations saisies sont invalides. Veuillez vérifier."
+    },
+    "auth": {
+      "unauthorized": "Vous devez être connecté pour effectuer cette action.",
+      "forbidden": "Vous n'avez pas les permissions nécessaires."
+    },
+    "server": {
+      "internal_error": "Erreur du serveur. Veuillez réessayer plus tard."
+    },
+    "generic": "Une erreur est survenue."
   }
 }

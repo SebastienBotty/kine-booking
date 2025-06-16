@@ -1,3 +1,5 @@
+import { ApiError } from "@/lib/errors";
+import { ApiResponse } from "@/lib/errors/types";
 import { WeekScheduleInfosType } from "@/types/type";
 
 export async function fetchSlots(practitionerId: string, currentStart: Date) {
@@ -28,16 +30,21 @@ export const postAppointment = async (data: {
   const res = await fetch("/api/auth/appointment", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) {
-    const errorData = await res.json();
-    console.error(errorData);
-    throw new Error(errorData.error || "Erreur inconnue");
+  const jsonData: ApiResponse = await res.json();
+
+  // Vérifier si la réponse indique un succès
+  if (!jsonData.success) {
+    // Lancer une erreur avec toutes les informations
+    throw new ApiError(
+      jsonData.error.message,
+      res.status,
+      jsonData.error.code,
+      jsonData.error.details
+    );
   }
 
-  const jsonData = await res.json();
-  return jsonData;
+  return jsonData.data;
 };

@@ -1,2 +1,17 @@
 @import "./reset";
 @import "../components/FadeInSection";
+
+.confirmation-text {
+  color: #237a57;
+}
+
+.error-text {
+  color: #a83232;
+}
+.confirmation-bg {
+  background-color: #e6f4ec;
+}
+
+.error-bg {
+  background-color: #fdecea;
+}

@@ -46,6 +46,35 @@
     "currentWeek": "Week of "
   },
   "AppointmentSummary": {
-    "textAreaNote": "Add a note..."
+    "textAreaNote": "Add a note...",
+    "booking": {
+      "confirmed": "Appointment confirmed",
+      "confirmedDetails": "Find the details in the 'My appointments' tab"
+    }
+  },
+  "fail": "Failure",
+  "errors": {
+    "network": {
+      "offline": "No internet connection. Please check your connection.",
+      "unexpected": "An unexpected error occurred."
+    },
+    "appointment": {
+      "slot_already_taken": "This time slot is no longer available. Please choose another one.",
+      "unauthorized_patient_booking": "You cannot book an appointment for another patient.",
+      "self_appointment_not_allowed": "You cannot book an appointment with yourself.",
+      "practitioner_not_found": "The selected practitioner was not found.",
+      "patient_not_found": "Patient not found."
+    },
+    "validation": {
+      "invalid_data": "The entered information is invalid. Please check."
+    },
+    "auth": {
+      "unauthorized": "You must be logged in to perform this action.",
+      "forbidden": "You do not have the necessary permissions."
+    },
+    "server": {
+      "internal_error": "Server error. Please try again later."
+    },
+    "generic": "An error occurred."
   }
 }

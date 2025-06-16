@@ -4,7 +4,8 @@ import { AuthenticatedRequest, PostAppointmentType } from "@/types/type";
 import { appointmentSchema } from "../validators/appointmentValidator";
 import { ZodError } from "zod";
 import { cleanHtml } from "../lib/helper";
-
+import { ApiError } from "@/lib/errors";
+import { createApiError } from "@/lib/errors/factories";
 export async function postAppointment(
   appointmentData: PostAppointmentType,
   user: AuthenticatedRequest["user"]
@@ -18,14 +19,18 @@ export async function postAppointment(
       createdByRole: user?.role ?? appointmentData.createdByRole,
       cancelledByRole: appointmentData.cancelledByRole ?? undefined,
     });
+
+    // Validations métier avec factory functions
     if (
       validatedData.createdByRole === "user" &&
       validatedData.patientId !== appointmentData.creatorId
     ) {
-      throw new Error("Un patient  ne peut pas prendre un rdv pour un autre patient");
+      throw createApiError.appointment.unauthorizedPatientBooking();
     }
-    if (validatedData.practitionerId === validatedData.patientId)
-      throw new Error("Un practitien  ne peut pas prendre un rdv cez lui-même");
+
+    if (validatedData.practitionerId === validatedData.patientId) {
+      throw createApiError.appointment.selfAppointment();
+    }
 
     const existing = await prisma.appointment.findFirst({
       where: {
@@ -36,22 +41,37 @@ export async function postAppointment(
     });
 
     if (existing) {
-      throw new Error("Ce rendez-vous est déja pris.");
+      throw createApiError.appointment.slotTaken();
     }
+
     return prisma.appointment.create({
       data: validatedData,
     });
   } catch (error) {
-    if (error instanceof ZodError) {
-      console.error("Validation Zod échouée :", error.errors);
-      throw new Error("Données de rendez-vous invalides");
-    } else if (error instanceof Error) {
-      console.error("Erreur lors de la création d'un rdv", error);
-      throw new Error("Impossible de créer un rdv:" + error.message);
-    } else {
-      console.error("Erreur lors de la création d'un rdv", error);
-      throw new Error("Unknown errror");
+    // Re-lancer les erreurs personnalisées et Zod
+    if (error instanceof ApiError || error instanceof ZodError) {
+      throw error;
     }
+
+    // Gestion des erreurs Prisma
+    if (error instanceof Error) {
+      if (error.message.includes("Foreign key")) {
+        if (error.message.includes("practitioner")) {
+          throw createApiError.appointment.practitionerNotFound();
+        }
+        if (error.message.includes("patient")) {
+          throw createApiError.appointment.patientNotFound();
+        }
+        throw createApiError.notFound("Référence invalide");
+      }
+
+      if (error.message.includes("Unique constraint")) {
+        throw createApiError.conflict("Ce rendez-vous existe déjà");
+      }
+    }
+
+    console.error("Erreur inattendue:", error);
+    throw createApiError.internal();
   }
 }
 

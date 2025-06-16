@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import AuthProvider from "../../providers/AuthProvider";
 import { SignInButton } from "../../components/AuthButtons";
 import { getMessages } from "next-intl/server";
+import "../../styles/base/_globals.scss";
 
 export default async function LocaleLayout({
   children,
