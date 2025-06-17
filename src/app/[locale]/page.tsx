@@ -16,7 +16,6 @@ export default async function HomePage() {
 
   return (
     <div className={styles.page}>
-      <LanguageSelector />
       {/* Header */}
       <header className={styles.header}>
         <h1>{t("home.title")}</h1>

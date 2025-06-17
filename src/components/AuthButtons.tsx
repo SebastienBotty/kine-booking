@@ -3,10 +3,21 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { Button } from "./Button";
+import { useTranslations } from "next-intl";
 
-export const SignInButton = () => {
+export const AuthButtons = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const t = useTranslations();
+
+  const SignOutButton = () => {
+    return (
+      <Button size="md" variant="secondary" onClick={() => signOut()}>
+        {t("Navbar.disconnect")}
+      </Button>
+    );
+  };
 
   if (session?.user) {
     return (
@@ -25,10 +36,10 @@ export const SignInButton = () => {
       }
     };
 
-    return <button onClick={handleSignIn}>Login</button>;
+    return (
+      <Button onClick={handleSignIn} size="md" variant="secondary">
+        {t("Navbar.signin")}
+      </Button>
+    );
   }
-};
-
-export const SignOutButton = () => {
-  return <button onClick={() => signOut({ callbackUrl: "/" })}>Logout</button>;
 };
