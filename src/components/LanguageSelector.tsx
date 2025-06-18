@@ -3,6 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { LanguageType } from "@/types/type";
 import styles from "@/styles/components/LanguageSelector.module.scss";
 import { useState } from "react";
+import { FaAngleDown } from "react-icons/fa6";
 
 function LanguageSelector() {
   const router = useRouter();
@@ -21,7 +22,10 @@ function LanguageSelector() {
   return (
     <div className={styles.languageSelector}>
       <button className={styles.activeLang} onClick={() => setIsOpen(!isOpen)}>
-        {currentLang}
+        {currentLang}{" "}
+        <div className={styles.angleDown}>
+          <FaAngleDown />
+        </div>
       </button>
 
       <div className={styles.dropdown}>

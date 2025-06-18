@@ -6,40 +6,43 @@ import { usePathname } from "next/navigation";
 import { Button } from "./Button";
 import { useTranslations } from "next-intl";
 
+import { FaArrowRightToBracket } from "react-icons/fa6";
+
 export const AuthButtons = () => {
   const { data: session } = useSession();
+  return session?.user ? <SignOutButton /> : <SignInButton />;
+};
+
+export const SignInButton = () => {
   const pathname = usePathname();
   const t = useTranslations();
 
-  const SignOutButton = () => {
-    return (
-      <Button size="md" variant="secondary" onClick={() => signOut()}>
-        {t("Navbar.disconnect")}
-      </Button>
-    );
+  const handleSignIn = () => {
+    const isHome = pathname === "/";
+    if (isHome) {
+      signIn(undefined, { callbackUrl: "/dashboard" });
+    } else {
+      signIn();
+    }
   };
 
-  if (session?.user) {
-    return (
-      <>
-        <div onClick={() => console.log(session.user)}>{session.user.name}</div> -----{" "}
-        <SignOutButton />
-      </>
-    );
-  } else {
-    const handleSignIn = () => {
-      const isHome = pathname === "/";
-      if (isHome) {
-        signIn(undefined, { callbackUrl: "/dashboard" });
-      } else {
-        signIn();
-      }
-    };
+  return (
+    <Button onClick={handleSignIn} size="md" variant="secondary">
+      {t("Navbar.signin")}
+    </Button>
+  );
+};
 
-    return (
-      <Button onClick={handleSignIn} size="md" variant="secondary">
-        {t("Navbar.signin")}
-      </Button>
-    );
-  }
+export const SignOutButton = () => {
+  const t = useTranslations();
+  return (
+    <Button
+      size="md"
+      variant="secondary"
+      iconRight={<FaArrowRightToBracket />}
+      onClick={() => signOut()}
+    >
+      {t("Navbar.disconnect")}
+    </Button>
+  );
 };

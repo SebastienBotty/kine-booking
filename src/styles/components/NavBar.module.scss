@@ -62,6 +62,7 @@
   padding: 0 1rem;
   height: 100%;
   transition: all 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     color: #007bff;
@@ -70,6 +71,55 @@
 
 .menuIcon {
   display: none;
+}
+
+.userDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  &:hover .dropdownMenu {
+    display: block;
+  }
+
+  .angleDown {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  &:hover .angleDown {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  width: auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 1000;
+
+  li {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    color: #333;
+    background: none;
+    border: none;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: #f5f5f5;
+      color: #007bff;
+    }
+  }
 }
 
 @media screen and (max-width: 960px) {

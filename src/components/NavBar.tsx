@@ -6,7 +6,8 @@ import { FaAlignJustify, FaXmark } from "react-icons/fa6";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "./LanguageSelector";
 import { useSession } from "next-auth/react";
-import { AuthButtons } from "./AuthButtons";
+import { AuthButtons, SignInButton, SignOutButton } from "./AuthButtons";
+import { FaAngleDown } from "react-icons/fa6";
 
 interface LinkType {
   href: string;
@@ -48,17 +49,13 @@ function NavBar() {
         </div>
 
         <div className={styles.menuIcon}>
-          {isOpen ? (
-            <>
-              <LanguageSelector />
-              <FaXmark onClick={() => setIsOpen(!isOpen)} />
-            </>
-          ) : (
-            <>
-              <LanguageSelector />
+          {session?.user ? session.user.name : <SignInButton />}
 
-              <FaAlignJustify onClick={() => setIsOpen(!isOpen)} />
-            </>
+          <LanguageSelector />
+          {isOpen ? (
+            <FaXmark onClick={() => setIsOpen(!isOpen)} />
+          ) : (
+            <FaAlignJustify onClick={() => setIsOpen(!isOpen)} />
           )}
         </div>
 
@@ -88,9 +85,24 @@ function NavBar() {
             (isOpen && session?.user.role === "admin" && displayLinks(practitionerLinks))}
           {isOpen && session?.user.role === "admin" && displayLinks(adminLinks)}
           <li className={styles.navItem}>
-            <div className={styles.navLink}>
-              <AuthButtons />
-            </div>
+            {session?.user && !isOpen ? (
+              <div className={styles.userDropdown}>
+                <span className={styles.navLink}>
+                  {session.user.name}
+                  <FaAngleDown className={styles.angleDown} />
+                </span>
+                <ul className={styles.dropdownMenu}>
+                  {displayLinks(userLinks)}
+                  <li className={styles.navItem}>
+                    <SignOutButton />
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div className={` ${styles.navLink} ${styles.accountLinks} `}>
+                <AuthButtons />
+              </div>
+            )}
           </li>
           {!isOpen && (
             <li className={styles.navItem}>
