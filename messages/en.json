@@ -46,7 +46,7 @@
     "currentWeek": "Week of "
   },
   "AppointmentSummary": {
-    "textAreaNote": "Add a note...",
+    "textAreaNote": "Add a note (optional)",
     "booking": {
       "confirmed": "Appointment confirmed",
       "confirmedDetails": "Find the details in the 'My appointments' tab"

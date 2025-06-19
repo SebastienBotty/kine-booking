@@ -47,7 +47,7 @@
     "currentWeek": "Week van "
   },
   "AppointmentSummary": {
-    "textAreaNote": "Voeg een notitie toe...",
+    "textAreaNote": "Voeg een notitie toe (optioneel)",
     "booking": {
       "confirmed": "Afspraak bevestigd",
       "confirmedDetails": "Bekijk de details in het tabblad 'Mijn afspraken'"
