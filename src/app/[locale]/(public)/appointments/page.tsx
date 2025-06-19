@@ -12,6 +12,8 @@ import { useSession } from "next-auth/react";
 import AppointmentSummary from "@/components/AppointmentSummary";
 import { SignInButton } from "@/components/AuthButtons";
 import { getMondayAt5AM } from "@/lib/functions/helpers";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function AppointmentPage() {
   const { data: session } = useSession();
@@ -144,7 +146,7 @@ export default function AppointmentPage() {
       </select>
 
       {selectedDoctorId && (
-        <div style={{ marginTop: 32 }}>
+        <div className={styles.schedulContainer}>
           <div className={styles["week-header"]}>
             <button
               aria-label="7 jours précédents"
@@ -158,7 +160,7 @@ export default function AppointmentPage() {
                 })
               }
             >
-              ➡️
+              <FaArrowLeft />
             </button>
             <span>
               {t("appointments.currentWeek")} {format.dateTime(currentStart)}
@@ -174,58 +176,73 @@ export default function AppointmentPage() {
                 })
               }
             >
-              ➡️
+              <FaArrowRight />
             </button>
           </div>
-          <ul className={styles["days-list"]}>
-            {availabilities.map((daySlots, index) => {
-              if (index === 0) return null;
-              return (
-                <li key={index} className={styles["day-item"]}>
-                  <strong className={styles["day-label"]}>
-                    {daySlots.length > 0
-                      ? format.dateTime(new Date(daySlots[0].startTime), {
-                          weekday: "long",
-                          day: "numeric",
-                          month: "long",
-                        })
-                      : format.dateTime(
-                          new Date(
-                            new Date().setDate(
-                              new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
-                            )
-                          ),
-                          {
+
+          {loading ? (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {" "}
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <ul className={styles["days-list"]}>
+              {availabilities.map((daySlots, index) => {
+                if (index === 0) return null;
+                return (
+                  <li key={index} className={styles["day-item"]}>
+                    <strong className={styles["day-label"]}>
+                      {daySlots.length > 0
+                        ? format.dateTime(new Date(daySlots[0].startTime), {
                             weekday: "long",
                             day: "numeric",
                             month: "long",
-                          }
-                        )}
-                  </strong>
-                  <div className={styles.slots} onClick={() => console.log(daySlots)}>
-                    {!daySlots.every((d) => d.blocked == true) ? (
-                      daySlots.map((slot) => (
-                        <button
-                          key={slot.id}
-                          className={`${styles["slot-btn"]} ${
-                            slot.blocked ? styles["blocked"] : ""
-                          }`}
-                          onClick={() => handleSlotClick(slot)}
-                        >
-                          {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </button>
-                      ))
-                    ) : (
-                      <div className={styles["no-slot"]}>{t("appointments.no-availability")}</div>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                          })
+                        : format.dateTime(
+                            new Date(
+                              new Date().setDate(
+                                new Date().getDate() + ((index - new Date().getDay() + 7) % 7)
+                              )
+                            ),
+                            {
+                              weekday: "long",
+                              day: "numeric",
+                              month: "long",
+                            }
+                          )}
+                    </strong>
+                    <div className={styles.slots} onClick={() => console.log(daySlots)}>
+                      {!daySlots.every((d) => d.blocked == true) ? (
+                        daySlots.map((slot) => (
+                          <button
+                            key={slot.id}
+                            className={`${styles["slot-btn"]} ${
+                              slot.blocked ? styles["blocked"] : ""
+                            }`}
+                            onClick={() => handleSlotClick(slot)}
+                          >
+                            {new Date(slot.startTime).toLocaleTimeString("fr-FR", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </button>
+                        ))
+                      ) : (
+                        <div className={styles["no-slot"]}>{t("appointments.no-availability")}</div>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       )}
     </div>
