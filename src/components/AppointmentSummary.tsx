@@ -7,6 +7,7 @@ import { FaUserClock, FaRegCalendarCheck, FaRegCalendarXmark, FaCalendar } from 
 import { postAppointment } from "@/api/appointmentApi";
 import { useErrorMessages } from "@/hooks/useErrorMsg";
 import { ApiError } from "@/lib/errors";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface props {
   doctor: Doctor;
@@ -25,6 +26,7 @@ function AppointmentSummary(props: props) {
   const { getErrorMessage } = useErrorMessages();
   const [errorMsg, setErrorMsg] = useState("");
   const [confirmationMsg, setConfirmationMsg] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const formattedDate = props.formatDate(new Date(props.startTime), {
     year: "numeric",
@@ -44,6 +46,7 @@ function AppointmentSummary(props: props) {
   const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   const confirmAppointment = async () => {
+    setLoading(true);
     postAppointment({
       practitionerId: props.doctor.id,
       patientId: props.patientId,
@@ -60,7 +63,7 @@ function AppointmentSummary(props: props) {
         setConfirmationMsg(true);
         setTimeout(() => {
           props.closeModal && props.closeModal();
-        }, 5000);
+        }, 3000);
       })
       .catch((err) => {
         const errorMessage = getErrorMessage(err as ApiError | Error);
@@ -71,9 +74,10 @@ function AppointmentSummary(props: props) {
           props.toggleSlotAvailability(props.startTime.toDateString(), true);
           setTimeout(() => {
             props.closeModal && props.closeModal();
-          }, 5000);
+          }, 3000);
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
   return (
     <div className={styles["appointment-summary"]}>
@@ -114,14 +118,18 @@ function AppointmentSummary(props: props) {
               onChange={(e) => setPatientNote(e.target.value)}
             />
             <div className={styles["appointment-buttons"]}>
-              <Button
-                variant="primary"
-                size="md"
-                iconLeft={<FaCalendar />}
-                onClick={confirmAppointment}
-              >
-                Confirmer
-              </Button>
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <Button
+                  variant="primary"
+                  size="md"
+                  iconLeft={<FaCalendar />}
+                  onClick={confirmAppointment}
+                >
+                  Confirmer
+                </Button>
+              )}
             </div>
           </div>
           <div className={styles["appointment-ticket"]}>
