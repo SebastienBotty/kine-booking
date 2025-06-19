@@ -47,7 +47,7 @@
     "currentWeek": "Semaine du "
   },
   "AppointmentSummary": {
-    "textAreaNote": "Ajouter une note...",
+    "textAreaNote": "Ajouter une note (optionnel)",
     "booking": {
       "confirmed": "Rendez-vous confirmé",
       "confirmedDetails": "Retrouvez les informations dans l'onget 'mes rendez-vous"
