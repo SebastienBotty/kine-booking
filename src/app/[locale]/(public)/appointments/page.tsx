@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import AppointmentSummary from "@/components/AppointmentSummary";
 import { SignInButton } from "@/components/AuthButtons";
 import { getMondayAt5AM } from "@/lib/functions/helpers";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 export default function AppointmentPage() {
   const { data: session } = useSession();
@@ -144,7 +145,7 @@ export default function AppointmentPage() {
       </select>
 
       {selectedDoctorId && (
-        <div style={{ marginTop: 32 }}>
+        <div className={styles.schedulContainer}>
           <div className={styles["week-header"]}>
             <button
               aria-label="7 jours précédents"
@@ -158,7 +159,7 @@ export default function AppointmentPage() {
                 })
               }
             >
-              ➡️
+              <FaArrowLeft />
             </button>
             <span>
               {t("appointments.currentWeek")} {format.dateTime(currentStart)}
@@ -174,7 +175,7 @@ export default function AppointmentPage() {
                 })
               }
             >
-              ➡️
+              <FaArrowRight />
             </button>
           </div>
           <ul className={styles["days-list"]}>
