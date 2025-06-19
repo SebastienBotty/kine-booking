@@ -77,5 +77,20 @@
       "internal_error": "Erreur du serveur. Veuillez réessayer plus tard."
     },
     "generic": "Une erreur est survenue."
+  },
+  "Navbar": {
+    "home": "Accueil",
+    "team": "Equipe",
+    "care": "Soins",
+    "contact": "Contact",
+    "signin": "Se connecter",
+    "signup": "S'inscrire",
+    "disconnect": "Se déconnecter",
+    "myAccount": "Mon compte",
+    "myAppointments": "Mes rendez-vous",
+    "mySchedule": "Mon planning",
+    "management": "Management",
+    "allAppointments": "Tous les rendez-vous",
+    "settings": "Paramètres"
   }
 }

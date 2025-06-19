@@ -77,5 +77,20 @@
       "internal_error": "Serverfout. Probeer het later opnieuw."
     },
     "generic": "Er is een fout opgetreden."
+  },
+  "Navbar": {
+    "home": "Home",
+    "team": "Team",
+    "care": "Zorg",
+    "contact": "Contact",
+    "signin": "Inloggen",
+    "signup": "Registreren",
+    "disconnect": "Uitloggen",
+    "myAccount": "Mijn account",
+    "myAppointments": "Mijn afspraken",
+    "mySchedule": "Mijn planning",
+    "management": "Beheer",
+    "allAppointments": "Alle afspraken",
+    "settings": "Instellingen"
   }
 }

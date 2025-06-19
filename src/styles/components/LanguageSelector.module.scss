@@ -1,0 +1,126 @@
+.languageSelector {
+  position: relative;
+  z-index: 1002;
+}
+
+.activeLang {
+  padding: 8px 16px;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  &:hover + .dropdown {
+    display: block;
+  }
+  &:hover .angleDown {
+    transform: rotate(180deg);
+  }
+}
+
+.angleDown {
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    transform: rotate(180deg);
+  }
+}
+
+.userDropdown:hover .angleDown {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100%);
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  padding: 4px;
+  min-width: 100%;
+  animation: slideDown 0.2s ease;
+  z-index: 1002;
+
+  &:hover {
+    display: block;
+  }
+  &:hover .activeLang > .angleDown {
+    transform: rotate(180deg);
+  }
+}
+
+.langButton {
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  text-align: left;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* @media screen and (max-width: 768px) {
+  .languageSelector {
+    top: 16px;
+    right: 16px;
+  }
+
+  .activeLang {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .langButton {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+ */
+
+.languageSelector:hover .angleDown,
+.languageSelector:focus-within .angleDown,
+.languageSelector .dropdown:hover ~ .activeLang .angleDown,
+.languageSelector .dropdown:hover .angleDown {
+  transform: rotate(180deg);
+}

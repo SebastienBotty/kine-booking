@@ -76,5 +76,20 @@
       "internal_error": "Server error. Please try again later."
     },
     "generic": "An error occurred."
+  },
+  "Navbar": {
+    "home": "Home",
+    "team": "Team",
+    "care": "Care",
+    "contact": "Contact",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "disconnect": "Sign out",
+    "myAccount": "My account",
+    "myAppointments": "My appointments",
+    "mySchedule": "My schedule",
+    "management": "Management",
+    "allAppointments": "All appointments",
+    "settings": "Settings"
   }
 }
