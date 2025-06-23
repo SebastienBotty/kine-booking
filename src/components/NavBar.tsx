@@ -93,6 +93,9 @@ function NavBar() {
                 </span>
                 <ul className={styles.dropdownMenu}>
                   {displayLinks(userLinks)}
+                  {session?.user.role === "practitioner" ||
+                    (session?.user.role === "admin" && displayLinks(practitionerLinks))}
+                  {session?.user.role === "admin" && displayLinks(adminLinks)}
                   <li className={styles.navItem}>
                     <SignOutButton />
                   </li>
