@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LanguageType } from "@/types/type";
 import styles from "@/styles/components/LanguageSelector.module.scss";
 import { useState } from "react";
@@ -8,14 +8,14 @@ import { FaAngleDown } from "react-icons/fa6";
 function LanguageSelector() {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 
   // Récupère le chemin sans le préfixe de langue
   const pathWithoutLocale = pathname.replace(/^\/([a-z]{2})(\/|$)/, "/");
   const currentLang = pathname.split("/")[1].toUpperCase() as LanguageType;
-
   const changeLang = (lang: LanguageType) => {
-    router.push(`/${lang.toLowerCase()}${pathWithoutLocale}`);
+    router.push(`/${lang.toLowerCase()}${pathWithoutLocale}?${params}`);
     setIsOpen(false);
   };
 
