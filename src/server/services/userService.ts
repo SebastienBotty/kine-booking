@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { prisma } from "../prisma/prisma";
+import { prisma } from "../lib/prisma";
 
 export const getAllPractitioners = async () => {
   const pract = await prisma.user.findMany({

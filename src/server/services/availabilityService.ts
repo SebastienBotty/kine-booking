@@ -1,4 +1,4 @@
-import { prisma } from "../prisma/prisma";
+import { prisma } from "../lib/prisma";
 
 export const getAvailabilities = (practitionerId: string) => {
   return prisma.availability.findMany({ where: { practitionerId } });

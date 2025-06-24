@@ -1,4 +1,4 @@
-import { prisma } from "../prisma/prisma";
+import { prisma } from "../lib/prisma";
 
 //Get practionners unavailibilities on given date
 export const getUnavailabilities = (practitionerId: string, fromDate: Date, toDate: Date) => {
