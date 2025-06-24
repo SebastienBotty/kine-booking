@@ -1,11 +1,13 @@
 import { AppointmentStatus } from "@prisma/client";
-import { prisma } from "../prisma/prisma";
+import { prisma } from "../lib/prisma";
+import { invalidateAppointmentWeekCache, redis } from "../lib/redis";
 import { AuthenticatedRequest, PostAppointmentType } from "@/types/type";
 import { appointmentSchema } from "../validators/appointmentValidator";
 import { ZodError } from "zod";
 import { cleanHtml } from "../lib/helper";
 import { ApiError } from "@/lib/errors";
 import { createApiError } from "@/lib/errors/factories";
+
 export async function postAppointment(
   appointmentData: PostAppointmentType,
   user: AuthenticatedRequest["user"]
@@ -44,9 +46,12 @@ export async function postAppointment(
       throw createApiError.appointment.slotTaken();
     }
 
-    return prisma.appointment.create({
+    const newAppointment = await prisma.appointment.create({
       data: validatedData,
     });
+
+    invalidateAppointmentWeekCache(newAppointment.practitionerId, newAppointment.startTime);
+    return newAppointment;
   } catch (error) {
     // Re-lancer les erreurs personnalisées et Zod
     if (error instanceof ApiError || error instanceof ZodError) {
@@ -75,7 +80,18 @@ export async function postAppointment(
   }
 }
 
-export const getAppointments = (practitionerId: string, fromDate: Date, toDate: Date) => {
+export const getAppointments = async (practitionerId: string, fromDate: Date, toDate: Date) => {
+  const from = new Date(fromDate).toISOString();
+  const to = new Date(toDate).toISOString();
+
+  const cacheKey = `rdvs:${practitionerId}:${from}:${to}`;
+  const cached = await redis.get(cacheKey);
+
+  if (cached) {
+    console.log(cached);
+    return JSON.parse(cached);
+  }
+
   return prisma.appointment.findMany({
     where: {
       practitionerId: practitionerId,
